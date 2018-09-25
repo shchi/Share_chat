@@ -289,7 +289,12 @@ public class MainActivity extends AppCompatActivity {
                         .setMessageText(speech)
                         .build();
                 chatView.receive(receivedMessage);*/
-                chats.add(new Chat(speech, 1, R.drawable.chat_bot));
+
+                if(speech == "map"){
+                    NaverMap map = new NaverMap();
+                }else {
+                    chats.add(new Chat(speech, 1, R.drawable.chat_bot));
+                }
             }
         });
     }
