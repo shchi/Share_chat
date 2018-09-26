@@ -106,15 +106,15 @@ public class MainActivity extends AppCompatActivity {
         }*/
         adapter = new ChatAdapter(chats, this);
         binding.chatRoomListView.setAdapter(adapter);
-        /*binding.backChatRoomListImgView.setOnClickListener(new View.OnClickListener() {
+        binding.backChatRoomListImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
-        });*/
+        });
 
 
-        /*binding.sendMsgBtn.setOnClickListener(new View.OnClickListener() {
+        binding.sendMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gps = new GPSTracker(MainActivity.this);
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.chatRoomListView.scrollToPosition(chats.size()-1);
                 binding.msgEditText.setText("");
             }
-        });*/
+        });
     }
 
 
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(View v) {
+    /*public void onClick(View v) {
         gps = new GPSTracker(MainActivity.this);
         Log.i("gps enable", "gps enable");
         // GPS 사용유무 가져오기
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         binding.chatRoomListView.scrollToPosition(chats.size()-1);
         binding.msgEditText.setText("");
-    }
+    }*/
 
     private void sendRequest(String text) {
         Log.d(TAG, text);

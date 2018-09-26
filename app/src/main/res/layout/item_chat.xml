@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content" />
                 <LinearLayout
                     android:id="@+id/MapHere"
-                    android:clickable="true"
+
                     android:orientation="vertical"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
