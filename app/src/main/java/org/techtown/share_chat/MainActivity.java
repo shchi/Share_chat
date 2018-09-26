@@ -1,10 +1,13 @@
 package org.techtown.share_chat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -15,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.Gson;
 
 import org.techtown.share_chat.databinding.ActivityChatroomBinding;
+import org.techtown.share_chat.databinding.ItemChatBinding;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     ActivityChatroomBinding binding;
+    ItemChatBinding ic;
     private static final int CHATROOM = R.layout.activity_chatroom;
 
     private Vector<Chat> chats;
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, CHATROOM);
+        binding = DataBindingUtil.setContentView(this,  R.layout.activity_chatroom);
 
         final AIConfiguration config = new AIConfiguration("f5dfc697c01c47b7bab5215704793918",
                 AIConfiguration.SupportedLanguages.English,
@@ -67,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
         aiDataService = new AIDataService(this, config);
         final AIRequest aiRequest = new AIRequest();
 
-        int img = getIntent().getIntExtra("fImg", 0);
+        //int img = getIntent().getIntExtra("fImg", 0);
         chats = new Vector<>();
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         binding.chatRoomListView.setLayoutManager(manager);
-        sendRequest("hello");
+        //sendRequest("hello");
         //binding.chatRoomFriendNameTxtView.setText(fName);
        /* switch (fName) {
             case "근육몬":
@@ -101,13 +106,15 @@ public class MainActivity extends AppCompatActivity {
         }*/
         adapter = new ChatAdapter(chats, this);
         binding.chatRoomListView.setAdapter(adapter);
-        binding.backChatRoomListImgView.setOnClickListener(new View.OnClickListener() {
+        /*binding.backChatRoomListImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
-        });
-        binding.sendMsgBtn.setOnClickListener(new View.OnClickListener() {
+        });*/
+
+
+        /*binding.sendMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gps = new GPSTracker(MainActivity.this);
@@ -130,12 +137,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String msg = binding.msgEditText.getText().toString();
                 chats.add(new Chat(msg, 0, 0));
-                sendRequest( msg + " " + longitude + " / " + latitude);
+                sendRequest( msg + " \\ " + latitude + " \\ " + longitude);
                 adapter.notifyDataSetChanged();
                 binding.chatRoomListView.scrollToPosition(chats.size()-1);
-                binding.msgEditText.setText(null);
+                binding.msgEditText.setText("");
             }
-        });
+        });*/
     }
 
 
@@ -158,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*public void onClick(View v) {
+    public void onClick(View v) {
         gps = new GPSTracker(MainActivity.this);
         Log.i("gps enable", "gps enable");
         // GPS 사용유무 가져오기
@@ -178,18 +185,13 @@ public class MainActivity extends AppCompatActivity {
             Log.i("gps n", "gps n");
         }
         //new message
-        final Message message = new Message.Builder()
-                .setUser(myAccount)
-                .setRightMessage(true)
-                .setMessageText(chatView.getInputText())
-                .hideIcon(false)
-                .build();
-        //Set to chat view
-        chatView.send(message);
-        sendRequest(chatView.getInputText() + " " + longitude + " / " + latitude);
-        //Reset edit text
-        chatView.setInputText("");
-    }*/
+        String msg = binding.msgEditText.getText().toString();
+        chats.add(new Chat(msg, 0, 0));
+        sendRequest( msg + " \\ " + latitude + " \\ " + longitude);
+        adapter.notifyDataSetChanged();
+        binding.chatRoomListView.scrollToPosition(chats.size()-1);
+        binding.msgEditText.setText("");
+    }
 
     private void sendRequest(String text) {
         Log.d(TAG, text);
@@ -257,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
                 final Status status = response.getStatus();
                 final Result result = response.getResult();
                 final String speech = result.getFulfillment().getSpeech();
+                boolean layout = speech.contains("map");
                 final Metadata metadata = result.getMetadata();
                 final HashMap<String, JsonElement> params = result.getParameters();
 
@@ -290,8 +293,13 @@ public class MainActivity extends AppCompatActivity {
                         .build();
                 chatView.receive(receivedMessage);*/
 
-                if(speech == "map"){
-                    NaverMap map = new NaverMap();
+                if(layout){
+                    MapViewFragmentNaver fragment1 = new MapViewFragmentNaver();
+                    fragment1.setArguments(new Bundle());
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.add(R.id.MapHere, fragment1);
+                    fragmentTransaction.commit();
                 }else {
                     chats.add(new Chat(speech, 1, R.drawable.chat_bot));
                 }
@@ -306,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     /*@Override
     public void onBackPressed() {
         Intent intent = new Intent(ChatRoomActivity.this, MainActivity.class);

@@ -29,9 +29,8 @@ public class NaverMap extends NMapActivity {
     private NMapResourceProvider nMapResourceProvider;
     private NMapOverlayManager mapOverlayManager;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_map);
 
@@ -43,11 +42,11 @@ public class NaverMap extends NMapActivity {
 
     private void init() {
 
-
+        setContentView(R.layout.item_map);
         mapLayout = findViewById(R.id.MapContainer);
 
         mMapView = new NMapView(this);
-        mMapView.setClientId("V9auAVfEc_tChQ02K8Ba"); // 클라이언트 아이디 값 설정
+        mMapView.setClientId("A6D3vWfpPhz9pwYRD8Kv"); // 클라이언트 아이디 값 설정
         mMapView.setClickable(true);
         mMapView.setEnabled(true);
         mMapView.setFocusable(true);

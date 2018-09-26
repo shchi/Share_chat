@@ -34,7 +34,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/friendChatLayout"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp">
-
                 <TextView
                     tools:text="asdasdsadsadasdsadas"
                     android:background="@drawable/bot_chat_bubble"
@@ -42,6 +41,14 @@
                     android:id="@+id/friendMsgTxtView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/MapHere"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1">
+                </LinearLayout>
             </android.support.constraint.ConstraintLayout>
 
         </android.support.constraint.ConstraintLayout>
